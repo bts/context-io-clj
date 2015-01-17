@@ -11,7 +11,7 @@
     (com.ning.http.client Cookie PerRequestConfig RequestBuilder)
     (java.io File InputStream)))
 
-(defn execute-request-callbacks
+(defn execute-request
   "Submit the actual request, and call the callbacks.
 
    client    - The client to use for submitting the request.

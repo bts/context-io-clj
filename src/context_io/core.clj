@@ -107,7 +107,7 @@
                        (:action request-args)
                        (:uri request-args)
                        (apply concat (:processed-args request-args)))]
-    (execute-request-callbacks client request callbacks)))
+    (execute-request client request callbacks)))
 
 (defmacro def-context-io-method
   "Declares a Context.IO method with the supplied information
