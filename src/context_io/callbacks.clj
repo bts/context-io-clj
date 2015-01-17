@@ -67,7 +67,8 @@
 
    Returns the return value of the callback that got run."
 
-  [response callbacks & {:keys [events] :or {events #{:on-success :on-failure}}}]
+  [response callbacks & {:keys [events]
+                         :or {events #{:on-success :on-failure :on-exception}}}]
   (cond
     (and (:on-exception events)
          (ac/error response))
