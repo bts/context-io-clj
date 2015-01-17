@@ -53,10 +53,6 @@
   []
   (Callback. response-return-everything response-throw-error exception-rethrow))
 
-(defn emit-callback-list
-  [_]
-  req/*default-callbacks*)
-
 (defn handle-response
   "Handle the response, calling the correct callback
 

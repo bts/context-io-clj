@@ -21,8 +21,7 @@
 
    Returns the response as transformed by the appropriate handler."
   [client req handlers]
-  (let [options (apply concat (emit-callback-list handlers))
-        response (apply req/execute-request client req options)]
+  (let [response (req/execute-request client req)]
     (handle-response (ac/await response)
                      handlers
                      :events #{:on-success :on-failure :on-exception})))
