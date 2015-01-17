@@ -21,9 +21,11 @@
 
    Returns the response as transformed by the appropriate handler."
   [client req handlers]
-  (let [transform #(handle-response (ac/await %) handlers :events #{:on-success :on-failure :on-exception})
-        response (apply req/execute-request client req (apply concat (emit-callback-list handlers)))]
-    (transform response)))
+  (let [options (apply concat (emit-callback-list handlers))
+        response (apply req/execute-request client req options)]
+    (handle-response (ac/await response)
+                     handlers
+                     :events #{:on-success :on-failure :on-exception})))
 
 (defn- add-to-req
   [rb kvs f]
