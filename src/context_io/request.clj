@@ -18,13 +18,23 @@
    req      - The request to submit.
    handlers - A map of keyword event names to handler functions. Possible event
              names are :on-success, :on-failure, and :on-exception.
+   async    - True if http client should be invoked asynchronously
 
-   Returns the response as transformed by the appropriate handler."
-  [client req handlers]
-  (let [response (req/execute-request client req)]
-    (handle-response (ac/await response)
-                     handlers
-                     :events #{:on-success :on-failure :on-exception})))
+   Returns the response as transformed by the appropriate handler, or nil if
+   async is true."
+  [client req handlers & [async]]
+  (let [handle #(handle-response % handlers)]
+    (if async
+      (do
+        (req/execute-request client
+                             req
+                             :completed handle
+                             :error (fn [resp _throwable]
+                                      (handle resp)))
+        nil)
+      (let [response (req/execute-request client req)]
+        (ac/await response)
+        (handle response)))))
 
 (defn- add-to-req
   [rb kvs f]

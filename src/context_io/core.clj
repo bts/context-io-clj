@@ -106,8 +106,9 @@
         request (apply prepare-request-with-multi
                        (:action request-args)
                        (:uri request-args)
-                       (apply concat (:processed-args request-args)))]
-    (execute-request client request callbacks)))
+                       (apply concat (:processed-args request-args)))
+        async (:async arg-map)]
+    (execute-request client request callbacks async)))
 
 (defmacro def-context-io-method
   "Declares a Context.IO method with the supplied information
