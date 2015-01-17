@@ -12,18 +12,17 @@
     (java.io File InputStream)))
 
 (defn execute-request
-  "Submit the actual request, and call the callbacks.
+  "Submit the actual request, transforming the response with provided handlers.
 
-   client    - The client to use for submitting the request.
-   req       - The request to submit.
-   callbacks - A map of the possible callbacks to run. The keys are keyword
-               event names, and the values are functions. Possible event names
-               are :on-success, :on-failure and :on-exception.
+   client   - The client to use for submitting the request.
+   req      - The request to submit.
+   handlers - A map of keyword event names to handler functions. Possible event
+             names are :on-success, :on-failure, and :on-exception.
 
-   Returns the return value from the callback that got called."
-  [client req callbacks]
-  (let [transform #(handle-response (ac/await %) callbacks :events #{:on-success :on-failure :on-exception})
-        response (apply req/execute-request client req (apply concat (emit-callback-list callbacks)))]
+   Returns the response as transformed by the appropriate handler."
+  [client req handlers]
+  (let [transform #(handle-response (ac/await %) handlers :events #{:on-success :on-failure :on-exception})
+        response (apply req/execute-request client req (apply concat (emit-callback-list handlers)))]
     (transform response)))
 
 (defn- add-to-req
