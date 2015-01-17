@@ -12,13 +12,13 @@
     (java.io File InputStream)))
 
 (defn execute-request-callbacks
-  "Submit the actual request, and call the calbacks.
+  "Submit the actual request, and call the callbacks.
 
    client    - The client to use for submitting the request.
    req       - The request to submit.
    callbacks - A map of the possible callbacks to run. The keys are keyword
                event names, and the values are functions. Possible event names
-               are :on-success, :on-faulre and :on-exception.
+               are :on-success, :on-failure and :on-exception.
 
    Returns the return value from the callback that got called."
   [client req callbacks]
